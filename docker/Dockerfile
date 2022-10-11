@@ -18,11 +18,7 @@ RUN apt-get update && \
         libexiv2-dev \
         libjpeg-dev \
         libwebp-dev \
-        libjpeg-turbo-progs \
-        graphicsmagick \
-        libgraphicsmagick++3 \
-        libgraphicsmagick++1-dev \
-        libgraphicsmagick-q16-3 \
+        libjpeg-progs \
         zlib1g-dev \
         libboost-python-dev \
         gifsicle \
