@@ -25,8 +25,6 @@ RUN apt-get update && \
         gifsicle \
         ffmpeg && \
     apt-get clean
-RUN echo ${TARGETPLATFORM} > /tmp/arch
-RUN cat /tmp/arch
 
 RUN case ${TARGETPLATFORM} in \
         "linux/amd64")  ARCH="x86_64"  ;; \
