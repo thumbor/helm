@@ -11,6 +11,10 @@ on:
 permissions:
   packages: write
 
+defaults:
+  run:
+    working-directory: docker
+
 jobs:
   build:
     runs-on: ubuntu-latest
