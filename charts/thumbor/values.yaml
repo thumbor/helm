@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/thumbor/thumbor
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "sha-4883b76"
+  tag: "sha-4192378"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -84,3 +84,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+thumbor_config: |
+  AUTO_WEBP = True
+
+thumbor_config_existing_secret: {}
+
+thumbor_key:
+  manage: true
