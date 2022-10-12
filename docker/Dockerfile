@@ -59,4 +59,4 @@ ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/home/thumbor/venv
 ENV PATH="/home/thumbor/venv/bin:$PATH"
 
-CMD ["thumbor", "-d", "-l", "debug"]
+ENTRYPOINT ["thumbor"]
