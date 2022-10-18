@@ -1,6 +1,7 @@
 replicaCount: 1
 
 image:
+  # Overrides the image
   repository: ghcr.io/thumbor/thumbor
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
