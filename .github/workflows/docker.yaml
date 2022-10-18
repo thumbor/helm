@@ -5,12 +5,12 @@ on:
     branches:
       - "main"
     paths:
-      - "docker"
+      - "docker/**"
   pull_request:
     branches:
       - "main"
     paths:
-      - "docker"
+      - "docker/**"
 
 permissions:
   packages: write
