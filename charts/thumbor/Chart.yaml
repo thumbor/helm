@@ -4,6 +4,13 @@ description: Thumbor(https://github.com/thumbor/thumbor) Helm chart.
 type: application
 version: 0.1.0
 appVersion: "7.1.1"
+home: http://www.thumbor.org/
+sources:
+  - https://github.com/thumbor/helm/tree/main/charts/thumbor
+maintainers:
+  - name: Guilherme Souza
+    email: 101073+guilhermef@users.noreply.github.com
+    url: https://github.com/guilhermef
 dependencies:
   - name: common
     version: 2.x.x

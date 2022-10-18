@@ -1,0 +1,30 @@
+name: Update Charts docs
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "charts/**"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: charts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Generate Helm Documentation
+        id: helmdocs
+        run: docker run --rm --volume "$(pwd):/helm-docs" -u $(id -u) jnorwood/helm-docs:v1.11.0
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Helm Documentation
+          file_pattern: "*.md"
+          disable_globbing: true
