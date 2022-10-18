@@ -1,1 +1,0 @@
-Thumbor offcial Helm chart
