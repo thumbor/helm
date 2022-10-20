@@ -7,6 +7,9 @@ permissions:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        python_version: [3.9, 3.8, 3.7]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,6 +42,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
+          flavor: |
+            suffix=python-${{ matrix.version }}
           images: |
             ghcr.io/thumbor/thumbor
             quay.io/thumbor/thumbor

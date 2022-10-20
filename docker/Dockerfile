@@ -1,4 +1,5 @@
-FROM python:3.9-bullseye AS builder-image
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-bullseye AS builder-image
 
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND=noninteractive
@@ -38,7 +39,7 @@ RUN pip3 install --no-cache-dir wheel && \
     pip3 install --no-cache-dir -r requirements.txt && \
     pip3 install --no-cache-dir thumbor==7.1.1
 
-FROM python:3.9-slim-bullseye AS runner-image
+FROM python:${PYTHON_VERSION}-slim-bullseye AS runner-image
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
