@@ -63,6 +63,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/thumbor/thumbor:buildcache
-          cache-to: type=registry,ref=ghcr.io/thumbor/thumbor:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/thumbor/thumbor:buildcache-${{ matrix.python_version }}
+          cache-to: type=registry,ref=ghcr.io/thumbor/thumbor:buildcache-${{ matrix.python_version }},mode=max
           build-args: PYTHON_VERSION=${{ matrix.python_version }}
