@@ -43,7 +43,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           flavor: |
-            suffix=python-${{ matrix.version }}
+            suffix=-py-${{ matrix.python_version }}
           images: |
             ghcr.io/thumbor/thumbor
             quay.io/thumbor/thumbor
