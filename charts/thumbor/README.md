@@ -114,7 +114,7 @@ false
 			<td>image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"sha-4192378"
+"7-py-3.10"
 </pre>
 </td>
 			<td></td>
