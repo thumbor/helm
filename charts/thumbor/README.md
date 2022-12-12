@@ -21,6 +21,7 @@ Thumbor(https://github.com/thumbor/thumbor) Helm chart.
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | common | 2.x.x |
+| https://charts.bitnami.com/bitnami | redis | 17.3.x |
 
 ## ⚙️ Usage
 ```bash
@@ -228,6 +229,33 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>redis.image.registry</td>
+			<td>string</td>
+			<td><pre lang="json">
+"docker.io"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>redis.image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"redis"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>redis.image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"7.0"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>replicaCount</td>
 			<td>int</td>
 			<td><pre lang="json">
@@ -300,7 +328,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>thumbor_config</td>
+			<td>thumbor_config.content</td>
 			<td>string</td>
 			<td><pre lang="json">
 "AUTO_WEBP = True\n"
@@ -309,10 +337,28 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>thumbor_config_existing_secret</td>
-			<td>object</td>
+			<td>thumbor_config.queued_detector.enable_redis</td>
+			<td>bool</td>
 			<td><pre lang="json">
-{}
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>thumbor_config.queued_detector.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>thumbor_config_existing_secret</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
 </pre>
 </td>
 			<td></td>
