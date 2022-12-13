@@ -256,6 +256,123 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>remotecv.affinity</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.autoscaling.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.autoscaling.maxReplicas</td>
+			<td>int</td>
+			<td><pre lang="json">
+100
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.autoscaling.minReplicas</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.autoscaling.targetCPUUtilizationPercentage</td>
+			<td>int</td>
+			<td><pre lang="json">
+80
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.image.pullPolicy</td>
+			<td>string</td>
+			<td><pre lang="json">
+"IfNotPresent"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ghcr.io/thumbor/remotecv"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"3-py-3.11"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.nodeSelector</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.podAnnotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.replicaCount</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.resources</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.tolerations</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>replicaCount</td>
 			<td>int</td>
 			<td><pre lang="json">
@@ -349,7 +466,7 @@ true
 			<td>thumbor_config.queued_detector.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td></td>
