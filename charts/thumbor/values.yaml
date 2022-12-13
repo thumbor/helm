@@ -58,10 +58,6 @@ ingress:
 
 resources:
   {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -84,7 +80,7 @@ affinity: {}
 
 thumbor_config:
   queued_detector:
-    enabled: false
+    enabled: true
     enable_redis: true
 
   content: |
@@ -100,3 +96,32 @@ redis:
     registry: docker.io
     repository: redis
     tag: "7.0"
+
+remotecv:
+  replicaCount: 1
+
+  podAnnotations: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  image:
+    # Overrides the image
+    repository: ghcr.io/thumbor/remotecv
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "3-py-3.11"
+  resources:
+    {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []

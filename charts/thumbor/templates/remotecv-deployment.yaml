@@ -1,0 +1,75 @@
+{{- if .Values.thumbor_config.queued_detector.enabled }}
+apiVersion:  {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}-remotecv
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: remotecv
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if not .Values.remotecv.autoscaling.enabled }}
+  replicas: {{ .Values.remotecv.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: remotecv
+  template:
+    metadata:
+      {{- with .Values.remotecv.podAnnotations }}
+      annotations:
+        {{- include "common.tplvalues.render" (dict "value" .Values.remotecv.podAnnotations "context" $) | nindent 8 }}
+      {{- end }}
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        app.kubernetes.io/component: remotecv
+        {{- if .Values.commonLabels }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- include "common.images.renderPullSecrets"  (dict "value" .Values.remotecv.image "context" $) | nindent 6 }}
+      serviceAccountName: {{ include "thumbor.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.remotecv.image.repository }}:{{ .Values.remotecv.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.remotecv.image.pullPolicy }}
+          args:
+          - --host=thumbor-redis-master
+          - --port=6379
+          - --with-healthcheck
+          - --server-port=8080
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.remotecv.resources | nindent 12 }}
+      {{- with .Values.remotecv.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remotecv.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remotecv.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
