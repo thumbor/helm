@@ -46,6 +46,10 @@ spec:
           - --use-environment=true
           - -d
           - -l=debug
+          {{- with .Values.env }}
+          env:
+            {{- get (fromYaml (include "thumbor.envVars" $)) "env" | toYaml | nindent 12 -}}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8888

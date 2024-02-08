@@ -46,6 +46,10 @@ spec:
           - --port=6379
           - --with-healthcheck
           - --server-port=8080
+          {{- with .Values.remotecv.env }}
+          env:
+            {{- get (fromYaml (include "thumbor.envVars" $)) "env" | toYaml | nindent 12 -}}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080
