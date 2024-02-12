@@ -30,7 +30,7 @@ spec:
         {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "common.images.renderPullSecrets"  (dict "value" .Values.image "context" $) | nindent 6 }}
+      {{- include "common.images.renderPullSecrets"  (dict "value" .Values.image "context" $) | nindent 6 -}}
       serviceAccountName: {{ include "thumbor.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -45,10 +45,10 @@ spec:
           - --keyfile=/conf/thumbor/thumbor.key
           - --use-environment=true
           - -d
-          - -l=debug
+          - -l=warning
           {{- with .Values.env }}
           env:
-            {{- get (fromYaml (include "thumbor.envVars" $)) "env" | toYaml | nindent 12 -}}
+            {{- get (fromYaml (include "thumbor.envVars" .)) "env" | toYaml | nindent 12 -}}
           {{- end }}
           ports:
             - name: http

@@ -22,19 +22,17 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
-# env: {}
-  # key: value
 
-env:
-  ELASTICSEARCH_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: dd-elastic      
-        key: password
+env: {}
+  # SOME_KEY: SOME_VALUE
+  # SOME_PASSWORD:
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: mysecret  
+  #       key: password
 
 securityContext: {}
   # capabilities:
@@ -65,8 +63,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -111,6 +108,21 @@ remotecv:
 
   podAnnotations: {}
 
+  env:
+    HTTP_SERVER_PORT: "8080"
+    WITH_HEALTHCHECK: "1"
+    # this value needs to be adjusted,
+    # if the release is not called thumbor
+    REDIS_HOST: "thumbor-redis-master"
+    REDIS_PORT: "6379"
+    REDIS_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          # this value also needs to be adjusted
+          # if the release name changes
+          name: thumbor-redis
+          key: redis-password
+
   autoscaling:
     enabled: false
     minReplicas: 1
@@ -124,8 +136,7 @@ remotecv:
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: "3-py-3.11"
-  resources:
-    {}
+  resources: {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi

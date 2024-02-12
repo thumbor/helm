@@ -41,14 +41,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.remotecv.image.repository }}:{{ .Values.remotecv.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.remotecv.image.pullPolicy }}
+          # workaround, because normal env are not correctly read
+          # @see https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#use-environment-variables-to-define-arguments
           args:
-          - --host=thumbor-redis-master
-          - --port=6379
-          - --with-healthcheck
-          - --server-port=8080
+            - "--host=$(REDIS_HOST)"
+            - "--port=$(REDIS_PORT)"
+            - "--with-healthcheck"
+            - "--server-port=$(HTTP_SERVER_PORT)"
+            - "--password=$(REDIS_PASSWORD)"
+            - "-l=warning"
           {{- with .Values.remotecv.env }}
           env:
-            {{- get (fromYaml (include "thumbor.envVars" $)) "env" | toYaml | nindent 12 -}}
+            {{- get (fromYaml (include "thumbor.envVars" .)) "env" | toYaml | nindent 12 -}}
           {{- end }}
           ports:
             - name: http
