@@ -2,7 +2,7 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.1.1](https://img.shields.io/badge/AppVersion-7.1.1-informational?style=flat-square)
 
-Thumbor(https://github.com/thumbor/thumbor) Helm chart.
+Thumbor(<https://github.com/thumbor/thumbor>) Helm chart.
 
 **Homepage:** <http://www.thumbor.org/>
 
@@ -20,10 +20,11 @@ Thumbor(https://github.com/thumbor/thumbor) Helm chart.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | 2.x.x |
-| https://charts.bitnami.com/bitnami | redis | 17.3.x |
+| <https://charts.bitnami.com/bitnami> | common | 2.x.x |
+| <https://charts.bitnami.com/bitnami> | redis | 17.3.x |
 
 ## ⚙️ Usage
+
 ```bash
 helm repo add thumbor https://thumbor.github.io/helm
 helm install thumbor thumbor/thumbor
