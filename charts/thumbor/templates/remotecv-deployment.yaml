@@ -1,4 +1,4 @@
-{{- if .Values.thumbor_config.queued_detector.enabled }}
+{{- if .Values.remotecv.enabled }}
 apiVersion:  {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:

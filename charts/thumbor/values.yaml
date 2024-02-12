@@ -84,15 +84,10 @@ tolerations: []
 
 affinity: {}
 
-thumbor_config:
-  queued_detector:
-    enabled: true
-    enable_redis: true
-
-  content: |
+thumbor_config: |
     AUTO_WEBP = True
 
-thumbor_config_existing_secret: ""
+thumbor_existing_secret: ""
 
 thumbor_key:
   manage: true
@@ -102,8 +97,12 @@ redis:
     registry: docker.io
     repository: redis
     tag: "7.0"
+  replica:
+    replicaCount: 0
 
 remotecv:
+  enabled: true
+
   replicaCount: 1
 
   podAnnotations: {}

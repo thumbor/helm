@@ -65,8 +65,16 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+          {{- if .Values.thumbor_config }}
             - name: thumbor-config
-              mountPath: /conf/thumbor
+              mountPath: /conf/thumbor/thumbor.conf
+              subPath: thumbor.conf
+          {{- end }}
+          {{- if .Values.thumbor_key.manage }}
+            - name: thumbor-key
+              mountPath: /conf/thumbor/thumbor.key
+              subPath: thumbor.key
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -79,7 +87,16 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{ if or .Values.thumbor_config .Values.thumbor_key.manage -}}
       volumes:
+      {{- if .Values.thumbor_config }}
         - name: thumbor-config
+          configMap:
+            name: {{ include "common.names.fullname" . }}
+      {{- end }}
+      {{- if .Values.thumbor_key.manage }}
+        - name: thumbor-key
           secret:
-            secretName: {{ include "common.secrets.name" (dict "existingSecret" .Values.thumbor_config_existing_secret "defaultNameSuffix" "" "context" $) }}
+            secretName: {{ include "common.secrets.name" (dict "existingSecret" .Values.thumbor_existing_secret "defaultNameSuffix" "" "context" $) }}
+      {{- end }}
+      {{- end -}}
