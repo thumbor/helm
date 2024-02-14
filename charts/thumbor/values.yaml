@@ -84,16 +84,21 @@ resources: {}
   #   memory: 128Mi
 
 autoscaling:
+  # -- enable autoscaling via the HorizontalPodAutoscaler for the thumbor deployment
+  # Your Cluster needs to support this!
   enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# -- deploy thumbor to a specific node
 nodeSelector: {}
 
+# -- define tolerations for the thumbor pod
 tolerations: []
 
+# -- define affinities for the thumbor pod
 affinity: {}
 
 # -- configuration file for thumbor
@@ -121,8 +126,10 @@ remotecv:
   # -- set this to false if you want to use an already existing redis server
   installRedis: true
 
+  # -- how many remotecv pod do you want
   replicaCount: 1
 
+  # -- add podAnnotations tho the thumbor remotecv pod
   podAnnotations: {}
 
   env:
@@ -141,6 +148,8 @@ remotecv:
           key: redis-password
 
   autoscaling:
+    # -- enable autoscaling via the HorizontalPodAutoscaler for the remotecv deployment
+    # Your Cluster needs to support this!
     enabled: false
     minReplicas: 1
     maxReplicas: 100
@@ -148,10 +157,10 @@ remotecv:
     # targetMemoryUtilizationPercentage: 80
 
   image:
-    # Overrides the image
+    # -- Overrides the remotecv image
     repository: ghcr.io/thumbor/remotecv
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
+    # -- Overrides the image tag whose default is the chart appVersion.
     tag: "3-py-3.11"
   resources: {}
     # limits:
@@ -160,6 +169,11 @@ remotecv:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  # -- deploy thumbor remotecv to a specific node
   nodeSelector: {}
-  affinity: {}
+
+  # -- define tolerations for the thumbor remotecv pod
   tolerations: []
+
+  # -- define affinities for the thumbor remotecv pod
+  affinity: {}

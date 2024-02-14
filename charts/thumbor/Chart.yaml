@@ -2,7 +2,7 @@ apiVersion: v2
 name: thumbor
 description: Thumbor(https://github.com/thumbor/thumbor) Helm chart.
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: "7.1.1"
 home: http://www.thumbor.org/
 sources:
