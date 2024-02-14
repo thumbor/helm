@@ -35,6 +35,21 @@ spec:
       serviceAccountName: {{ include "thumbor.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.remotecv.env }}
+      initContainers:
+        - name: wait-for-redis
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - >
+              while [ $(echo -e "AUTH $REDIS_PASSWORD\r\nPING\r\n" | nc $REDIS_HOST $REDIS_PORT | grep -c "PONG") -ne 1 ]; do
+                echo "Waiting for Redis...";
+                sleep 1;
+              done
+          env:
+            {{- get (fromYaml (include "thumbor.envVars" .)) "env" | toYaml | nindent 12 -}}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

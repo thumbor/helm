@@ -18,4 +18,4 @@ dependencies:
   - name: redis
     version: 17.3.x
     repository: https://charts.bitnami.com/bitnami
-    condition: remotecv.enabled
+    condition: remotecv.installRedis
