@@ -1,6 +1,6 @@
-{{- if .Values.thumbor_key.manage }}
+{{- if .Values.thumbor_config }}
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: {{ include "common.names.fullname" . }}
   namespace: {{ .Release.Namespace | quote }}
@@ -9,5 +9,6 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
 data:
-  thumbor.key: {{ include "common.secrets.passwords.manage" (dict "secret" (include "common.names.fullname" .) "key" "thumbor.key" "providedValues" (list "thumbor_key.content" ) "context" $) }}
+  thumbor.conf: |-
+    {{- include "common.tplvalues.render" (dict "value" .Values.thumbor_config "context" $) | nindent 4 }}
 {{- end }}

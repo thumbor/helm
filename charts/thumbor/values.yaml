@@ -1,33 +1,46 @@
+# -- how many thumbor pods should be deployed
 replicaCount: 1
 
 image:
-  # Overrides the image
+  # -- Overrides the image
   repository: ghcr.io/thumbor/thumbor
+  # -- override pullPolicy for thumbor image
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   tag: "7-py-3.10"
 
+# -- if the used image is not public
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
+  # -- Specifies whether a service account should be created
+  create: false
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
+  # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# -- optional pod Annotations
 podAnnotations: {}
 
-podSecurityContext:
-  {}
+# -- optional podSecurityContext settings
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  {}
+# -- environment variables for the thumbor pod
+env: {}
+  # SOME_KEY: SOME_VALUE
+  # SOME_PASSWORD:
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: mysecret  
+  #       key: password
+
+# -- securityContext for the thumbor container
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -35,29 +48,34 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# Thumbor service
 service:
+  # -- Thumbor service type
   type: ClusterIP
+  # -- Thumbor service port thumbor uses container Port 80
   port: 80
 
 ingress:
+  # -- enable ingress
   enabled: false
+  # -- specify ingress class or leave blank for the default ingress class
   className: ""
-  annotations:
-    {}
+  # -- ingress annotations
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
         - path: /
+          # -- if errors occure use Prefix
           pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -66,27 +84,29 @@ resources:
   #   memory: 128Mi
 
 autoscaling:
+  # -- enable autoscaling via the HorizontalPodAutoscaler for the thumbor deployment
+  # Your Cluster needs to support this!
   enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# -- deploy thumbor to a specific node
 nodeSelector: {}
 
+# -- define tolerations for the thumbor pod
 tolerations: []
 
+# -- define affinities for the thumbor pod
 affinity: {}
 
-thumbor_config:
-  queued_detector:
-    enabled: true
-    enable_redis: true
-
-  content: |
+# -- configuration file for thumbor
+thumbor_config: |
     AUTO_WEBP = True
 
-thumbor_config_existing_secret: ""
+# -- if you have already an secret with the thumbor key
+thumbor_existing_secret: ""
 
 thumbor_key:
   manage: true
@@ -96,32 +116,64 @@ redis:
     registry: docker.io
     repository: redis
     tag: "7.0"
+  replica:
+    # -- increase this option if you need replicas
+    replicaCount: 0
 
 remotecv:
+  enabled: true
+
+  # -- set this to false if you want to use an already existing redis server
+  installRedis: true
+
+  # -- how many remotecv pod do you want
   replicaCount: 1
 
+  # -- add podAnnotations tho the thumbor remotecv pod
   podAnnotations: {}
 
+  env:
+    HTTP_SERVER_PORT: "8080"
+    WITH_HEALTHCHECK: "1"
+    # this value needs to be adjusted,
+    # if the release is not called thumbor
+    REDIS_HOST: "thumbor-redis-master"
+    REDIS_PORT: "6379"
+    REDIS_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          # this value also needs to be adjusted
+          # if the release name changes
+          name: thumbor-redis
+          key: redis-password
+
   autoscaling:
+    # -- enable autoscaling via the HorizontalPodAutoscaler for the remotecv deployment
+    # Your Cluster needs to support this!
     enabled: false
     minReplicas: 1
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
+
   image:
-    # Overrides the image
+    # -- Overrides the remotecv image
     repository: ghcr.io/thumbor/remotecv
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
+    # -- Overrides the image tag whose default is the chart appVersion.
     tag: "3-py-3.11"
-  resources:
-    {}
+  resources: {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  # -- deploy thumbor remotecv to a specific node
   nodeSelector: {}
-  affinity: {}
+
+  # -- define tolerations for the thumbor remotecv pod
   tolerations: []
+
+  # -- define affinities for the thumbor remotecv pod
+  affinity: {}

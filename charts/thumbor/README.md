@@ -46,7 +46,7 @@ helm install thumbor thumbor/thumbor
 {}
 </pre>
 </td>
-			<td></td>
+			<td>define affinities for the thumbor pod</td>
 		</tr>
 		<tr>
 			<td>autoscaling.enabled</td>
@@ -55,7 +55,7 @@ helm install thumbor thumbor/thumbor
 false
 </pre>
 </td>
-			<td></td>
+			<td>enable autoscaling via the HorizontalPodAutoscaler for the thumbor deployment Your Cluster needs to support this!</td>
 		</tr>
 		<tr>
 			<td>autoscaling.maxReplicas</td>
@@ -85,6 +85,15 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>env</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>environment variables for the thumbor pod</td>
+		</tr>
+		<tr>
 			<td>fullnameOverride</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -100,7 +109,7 @@ false
 "IfNotPresent"
 </pre>
 </td>
-			<td></td>
+			<td>override pullPolicy for thumbor image</td>
 		</tr>
 		<tr>
 			<td>image.repository</td>
@@ -109,7 +118,7 @@ false
 "ghcr.io/thumbor/thumbor"
 </pre>
 </td>
-			<td></td>
+			<td>Overrides the image</td>
 		</tr>
 		<tr>
 			<td>image.tag</td>
@@ -118,7 +127,7 @@ false
 "7-py-3.10"
 </pre>
 </td>
-			<td></td>
+			<td>Overrides the image tag whose default is the chart appVersion.</td>
 		</tr>
 		<tr>
 			<td>imagePullSecrets</td>
@@ -127,7 +136,7 @@ false
 []
 </pre>
 </td>
-			<td></td>
+			<td>if the used image is not public</td>
 		</tr>
 		<tr>
 			<td>ingress.annotations</td>
@@ -136,7 +145,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>ingress annotations</td>
 		</tr>
 		<tr>
 			<td>ingress.className</td>
@@ -145,7 +154,7 @@ false
 ""
 </pre>
 </td>
-			<td></td>
+			<td>specify ingress class or leave blank for the default ingress class</td>
 		</tr>
 		<tr>
 			<td>ingress.enabled</td>
@@ -154,7 +163,7 @@ false
 false
 </pre>
 </td>
-			<td></td>
+			<td>enable ingress</td>
 		</tr>
 		<tr>
 			<td>ingress.hosts[0].host</td>
@@ -181,7 +190,7 @@ false
 "ImplementationSpecific"
 </pre>
 </td>
-			<td></td>
+			<td>if errors occure use Prefix</td>
 		</tr>
 		<tr>
 			<td>ingress.tls</td>
@@ -208,7 +217,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>deploy thumbor to a specific node</td>
 		</tr>
 		<tr>
 			<td>podAnnotations</td>
@@ -217,7 +226,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>optional pod Annotations</td>
 		</tr>
 		<tr>
 			<td>podSecurityContext</td>
@@ -226,7 +235,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>optional podSecurityContext settings</td>
 		</tr>
 		<tr>
 			<td>redis.image.registry</td>
@@ -256,13 +265,22 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>redis.replica.replicaCount</td>
+			<td>int</td>
+			<td><pre lang="json">
+0
+</pre>
+</td>
+			<td>increase this option if you need replicas</td>
+		</tr>
+		<tr>
 			<td>remotecv.affinity</td>
 			<td>object</td>
 			<td><pre lang="json">
 {}
 </pre>
 </td>
-			<td></td>
+			<td>define affinities for the thumbor remotecv pod</td>
 		</tr>
 		<tr>
 			<td>remotecv.autoscaling.enabled</td>
@@ -271,7 +289,7 @@ false
 false
 </pre>
 </td>
-			<td></td>
+			<td>enable autoscaling via the HorizontalPodAutoscaler for the remotecv deployment Your Cluster needs to support this!</td>
 		</tr>
 		<tr>
 			<td>remotecv.autoscaling.maxReplicas</td>
@@ -301,6 +319,69 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>remotecv.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.HTTP_SERVER_PORT</td>
+			<td>string</td>
+			<td><pre lang="json">
+"8080"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.REDIS_HOST</td>
+			<td>string</td>
+			<td><pre lang="json">
+"thumbor-redis-master"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.REDIS_PASSWORD.valueFrom.secretKeyRef.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+"redis-password"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.REDIS_PASSWORD.valueFrom.secretKeyRef.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"thumbor-redis"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.REDIS_PORT</td>
+			<td>string</td>
+			<td><pre lang="json">
+"6379"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>remotecv.env.WITH_HEALTHCHECK</td>
+			<td>string</td>
+			<td><pre lang="json">
+"1"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>remotecv.image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -316,7 +397,7 @@ false
 "ghcr.io/thumbor/remotecv"
 </pre>
 </td>
-			<td></td>
+			<td>Overrides the remotecv image</td>
 		</tr>
 		<tr>
 			<td>remotecv.image.tag</td>
@@ -325,7 +406,16 @@ false
 "3-py-3.11"
 </pre>
 </td>
-			<td></td>
+			<td>Overrides the image tag whose default is the chart appVersion.</td>
+		</tr>
+		<tr>
+			<td>remotecv.installRedis</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>set this to false if you want to use an already existing redis server</td>
 		</tr>
 		<tr>
 			<td>remotecv.nodeSelector</td>
@@ -334,7 +424,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>deploy thumbor remotecv to a specific node</td>
 		</tr>
 		<tr>
 			<td>remotecv.podAnnotations</td>
@@ -343,7 +433,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>add podAnnotations tho the thumbor remotecv pod</td>
 		</tr>
 		<tr>
 			<td>remotecv.replicaCount</td>
@@ -352,7 +442,7 @@ false
 1
 </pre>
 </td>
-			<td></td>
+			<td>how many remotecv pod do you want</td>
 		</tr>
 		<tr>
 			<td>remotecv.resources</td>
@@ -370,7 +460,7 @@ false
 []
 </pre>
 </td>
-			<td></td>
+			<td>define tolerations for the thumbor remotecv pod</td>
 		</tr>
 		<tr>
 			<td>replicaCount</td>
@@ -379,7 +469,7 @@ false
 1
 </pre>
 </td>
-			<td></td>
+			<td>how many thumbor pods should be deployed</td>
 		</tr>
 		<tr>
 			<td>resources</td>
@@ -397,7 +487,7 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>securityContext for the thumbor container</td>
 		</tr>
 		<tr>
 			<td>service.port</td>
@@ -406,7 +496,7 @@ false
 80
 </pre>
 </td>
-			<td></td>
+			<td>Thumbor service port thumbor uses container Port 80</td>
 		</tr>
 		<tr>
 			<td>service.type</td>
@@ -415,7 +505,7 @@ false
 "ClusterIP"
 </pre>
 </td>
-			<td></td>
+			<td>Thumbor service type</td>
 		</tr>
 		<tr>
 			<td>serviceAccount.annotations</td>
@@ -424,16 +514,16 @@ false
 {}
 </pre>
 </td>
-			<td></td>
+			<td>Annotations to add to the service account</td>
 		</tr>
 		<tr>
 			<td>serviceAccount.create</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
-			<td></td>
+			<td>Specifies whether a service account should be created</td>
 		</tr>
 		<tr>
 			<td>serviceAccount.name</td>
@@ -442,43 +532,25 @@ true
 ""
 </pre>
 </td>
-			<td></td>
+			<td>The name of the service account to use. If not set and create is true, a name is generated using the fullname template</td>
 		</tr>
 		<tr>
-			<td>thumbor_config.content</td>
+			<td>thumbor_config</td>
 			<td>string</td>
 			<td><pre lang="json">
 "AUTO_WEBP = True\n"
 </pre>
 </td>
-			<td></td>
+			<td>configuration file for thumbor</td>
 		</tr>
 		<tr>
-			<td>thumbor_config.queued_detector.enable_redis</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>thumbor_config.queued_detector.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>thumbor_config_existing_secret</td>
+			<td>thumbor_existing_secret</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
 </pre>
 </td>
-			<td></td>
+			<td>if you have already an secret with the thumbor key</td>
 		</tr>
 		<tr>
 			<td>thumbor_key.manage</td>
@@ -496,10 +568,10 @@ true
 []
 </pre>
 </td>
-			<td></td>
+			<td>define tolerations for the thumbor pod</td>
 		</tr>
 	</tbody>
 </table>
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)

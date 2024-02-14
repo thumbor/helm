@@ -30,7 +30,7 @@ spec:
         {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "common.images.renderPullSecrets"  (dict "value" .Values.image "context" $) | nindent 6 }}
+      {{- include "common.images.renderPullSecrets"  (dict "value" .Values.image "context" $) | nindent 6 -}}
       serviceAccountName: {{ include "thumbor.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -45,7 +45,11 @@ spec:
           - --keyfile=/conf/thumbor/thumbor.key
           - --use-environment=true
           - -d
-          - -l=debug
+          - -l=warning
+          {{- with .Values.env }}
+          env:
+            {{- get (fromYaml (include "thumbor.envVars" .)) "env" | toYaml | nindent 12 -}}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8888
@@ -61,8 +65,16 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+          {{- if .Values.thumbor_config }}
             - name: thumbor-config
-              mountPath: /conf/thumbor
+              mountPath: /conf/thumbor/thumbor.conf
+              subPath: thumbor.conf
+          {{- end }}
+          {{- if .Values.thumbor_key.manage }}
+            - name: thumbor-key
+              mountPath: /conf/thumbor/thumbor.key
+              subPath: thumbor.key
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -75,7 +87,16 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{ if or .Values.thumbor_config .Values.thumbor_key.manage -}}
       volumes:
+      {{- if .Values.thumbor_config }}
         - name: thumbor-config
+          configMap:
+            name: {{ include "common.names.fullname" . }}
+      {{- end }}
+      {{- if .Values.thumbor_key.manage }}
+        - name: thumbor-key
           secret:
-            secretName: {{ include "common.secrets.name" (dict "existingSecret" .Values.thumbor_config_existing_secret "defaultNameSuffix" "" "context" $) }}
+            secretName: {{ include "common.secrets.name" (dict "existingSecret" .Values.thumbor_existing_secret "defaultNameSuffix" "" "context" $) }}
+      {{- end }}
+      {{- end -}}
