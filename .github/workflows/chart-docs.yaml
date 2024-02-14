@@ -21,7 +21,7 @@ jobs:
 
       - name: Generate Helm Documentation
         id: helmdocs
-        run: docker run --rm --volume "$(pwd):/helm-docs" -u $(id -u) jnorwood/helm-docs:v1.11.0
+        run: docker run --rm --volume "$(pwd):/helm-docs" -u $(id -u) jnorwood/helm-docs:v1.12.0
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
