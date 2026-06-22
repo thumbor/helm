@@ -2,8 +2,8 @@ apiVersion: v2
 name: thumbor
 description: Thumbor(https://github.com/thumbor/thumbor) Helm chart.
 type: application
-version: 0.1.0
-appVersion: "7.1.1"
+version: 2.0.1
+appVersion: "7.8.0"
 home: http://www.thumbor.org/
 sources:
   - https://github.com/thumbor/helm/tree/main/charts/thumbor
@@ -16,6 +16,6 @@ dependencies:
     version: 2.x.x
     repository: https://charts.bitnami.com/bitnami
   - name: redis
-    version: 17.3.x
+    version: 27.0.x
     repository: https://charts.bitnami.com/bitnami
-    condition: thumbor_config.queued_detector.enable_redis
+    condition: remotecv.installRedis

@@ -1,0 +1,14 @@
+{{- if .Values.thumbor_config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+data:
+  thumbor.conf: |-
+    {{- include "common.tplvalues.render" (dict "value" .Values.thumbor_config "context" $) | nindent 4 }}
+{{- end }}

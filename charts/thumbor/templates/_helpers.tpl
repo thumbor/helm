@@ -54,9 +54,34 @@
 Create the name of the service account to use
 */}}
 {{- define "thumbor.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "common.names.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
+    {{- if .Values.serviceAccount.create -}}
+        {{- default (include "common.names.fullname" .) .Values.serviceAccount.name -}}
+    {{- else -}}
+        {{- default "default" .Values.serviceAccount.name -}}
+    {{- end -}}
+{{- end -}}
+
+{{/*
+Convert Key:Value to correct env var format
+*/}}
+{{- define "thumbor.envVars" -}}
+    # create a empty resulsts list
+    {{- $result := list -}}
+    # loop over .Values.env with $key and $value
+    {{- range $key, $value := . -}}
+        # If value is a map it probably will be valueFrom
+        {{- if kindIs "map" $value -}}
+            # make sure it is realy a valueFrom a secret
+            {{- if hasKey $value "valueFrom" -}}
+                # append results list with the corret valueFrom format
+                {{- $result = append $result (dict "name" $key "valueFrom" $value.valueFrom) -}}
+            {{- end -}}
+        {{- else -}}
+            # if it is not a map, convert the value to string and append the results
+            # with the expected env var dict
+            {{- $result = append $result (dict "name" $key "value" ($value | toString)) -}}
+        {{- end -}}
+    {{- end -}}
+    # return result array as yaml dict under the key 'env'
+    {{- toYaml (dict "env" $result) | nindent 0 -}}
+{{- end -}}
